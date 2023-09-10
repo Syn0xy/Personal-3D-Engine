@@ -1,0 +1,8 @@
+Faire   |   Calcul :
+[ X ]   |   [ X ]       Affichage global
+[ X ]   |   [ - ]       Affichage triangle selon camera
+[ X ]   |   [   ]       Recalculer normals
+[ X ]   |   [ - ]       Pourcentage de deux vecteurs (normal, light)
+[ X ]   |   [ - ]       Raycast
+[ X ]   |   [ - ]       Collision Box & Sphere
+[   ]   |   [   ]       Force par collision

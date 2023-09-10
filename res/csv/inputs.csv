@@ -1,0 +1,9 @@
+NAME;POSITIVE;NEGATIVE
+Vertical;Z;S
+Horizontal;D;Q
+Jump;SPACE;
+Sprint;SHIFT;
+Crouch;CTRL;
+Left Click;MOUSE_1;
+Middle Click;MOUSE_2;
+Right Click;MOUSE_3;
