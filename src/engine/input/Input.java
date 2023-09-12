@@ -1,5 +1,7 @@
 package engine.input;
 
+import java.awt.MouseInfo;
+import java.awt.Point;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
@@ -14,20 +16,28 @@ public class Input implements KeyListener, MouseListener{
     public final static List<InputKeyCode> INPUTS_KEYCODE = InputKeyCode.getInputsKeyCode();
     public final static List<InputAction> INPUTS_ACTION = FileTranslatorCSV.getInputsAction();
     
-    public void keyPressed(KeyEvent e){ inputPressed(getKeyboardCode(e)); }
-    public void keyReleased(KeyEvent e){ inputReleased(getKeyboardCode(e)); }
+    public void keyPressed(KeyEvent e){ inputPressed(e); }
+    public void keyReleased(KeyEvent e){ inputReleased(e); }
     public void keyTyped(KeyEvent e){}
     public void mouseClicked(MouseEvent e){}
     public void mouseEntered(MouseEvent e){}
     public void mouseExited(MouseEvent e){}
-    public void mousePressed(MouseEvent e){ inputPressed(getMouseCode(e)); }
-    public void mouseReleased(MouseEvent e){ inputReleased(getMouseCode(e));}
+    public void mousePressed(MouseEvent e){ inputPressed(e); }
+    public void mouseReleased(MouseEvent e){ inputReleased(e);}
     
     private static String getKeyboardCode(KeyEvent e){ return KeyEvent.getKeyText(e.getKeyCode()); }
     private static String getMouseCode(MouseEvent e){ return "mouse" + e.getButton(); }
 
+    private static void inputPressed(KeyEvent e){ inputPressed(getKeyboardCode(e));}
+    private static void inputPressed(MouseEvent e){ inputPressed(getMouseCode(e));}
     private static void inputPressed(String key){ setKeyCodeDown(key); }
+    private static void inputReleased(KeyEvent e){ inputReleased(getKeyboardCode(e));}
+    private static void inputReleased(MouseEvent e){ inputReleased(getMouseCode(e));}
     private static void inputReleased(String key){ setKeyCodeUp(key); }
+
+    public final static Point getMouseLocation(){
+        return MouseInfo.getPointerInfo().getLocation();
+    }
 
     private static void setKeyCodeDown(String key){
         InputKeyCode input = getInputKeyCode(key);
@@ -107,10 +117,19 @@ public class Input implements KeyListener, MouseListener{
     }
 
     public static void update(){
+        refreshInput();
+        refreshKeyCodes();
+    }
+
+    private static void refreshInput(){
+        for(InputAction i : INPUTS_ACTION){
+            i.update();
+        }
+    }
+
+    private static void refreshKeyCodes(){
         for(InputKeyCode input : INPUTS_KEYCODE){
-            if(input.isNothing()) continue;
-            if(input.isEnter()) input.setEnter(false);
-            if(input.isExit()) input.reset();
+            input.refresh();
         }
     }
 }
