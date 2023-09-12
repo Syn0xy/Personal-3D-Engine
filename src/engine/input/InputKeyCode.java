@@ -29,6 +29,12 @@ public class InputKeyCode {
     public void setExit(boolean exit){ this.exit = exit; }
     public void setNothing(boolean nothing){ this.nothing = nothing; }
 
+    public void refresh(){
+        if(nothing) return;
+        if(enter) enter = false;
+        if(exit) reset();
+    }
+
     public void reset(){
         this.enter = false;
         this.stay = false;
