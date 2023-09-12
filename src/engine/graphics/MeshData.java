@@ -1,11 +1,7 @@
 package engine.graphics;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import engine.file.FileTranslatorOBJ;
 import engine.geometric.Vector3;
-import engine.graphics.component.Mesh;
 
 public class MeshData {
     private String fileName;

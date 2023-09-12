@@ -1,11 +1,11 @@
 TYPE;AXIS;NAME;POSITIVE;NEGATIVE
-KEYBOARD;;Vertical;Z;S
-KEYBOARD;;Horizontal;D;Q
-KEYBOARD;;Jump;SPACE;
-KEYBOARD;;Sprint;SHIFT;
-KEYBOARD;;Crouch;CTRL;
-MOUSE;;Left Click;MOUSE_1;
-MOUSE;;Middle Click;MOUSE_2;
-MOUSE;;Right Click;MOUSE_3;
-MOUSE_POSITION;X;Mouse X;
-MOUSE_POSITION;Y;Mouse Y;
+KEY;;Vertical;Z;S
+KEY;;Horizontal;D;Q
+KEY;;Jump;SPACE;
+KEY;;Sprint;SHIFT;
+KEY;;Crouch;CTRL;
+KEY;;Left Click;MOUSE_1;
+KEY;;Middle Click;MOUSE_2;
+KEY;;Right Click;MOUSE_3;
+MOUSE;X;Mouse X;
+MOUSE;Y;Mouse Y;

@@ -8,7 +8,6 @@ import engine.geometric.Vector3;
 import engine.graphics.MeshData;
 import engine.graphics.Triangle;
 import engine.scene.PrimitiveType;
-import engine.util.Debug;
 
 public class Mesh extends Component{
     public final static List<Mesh> MESHS = new ArrayList<>();

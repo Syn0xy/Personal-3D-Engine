@@ -1,7 +1,5 @@
 package engine.graphics.component;
 
-import java.awt.Paint;
-
 import engine.component.Component;
 import engine.graphics.PaintScene;
 

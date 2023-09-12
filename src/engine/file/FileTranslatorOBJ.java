@@ -10,7 +10,6 @@ import java.util.Scanner;
 
 import engine.geometric.Vector3;
 import engine.graphics.MeshData;
-import engine.graphics.component.Mesh;
 
 public class FileTranslatorOBJ {
     public final static String PATH = FileFinder.PATH + "obj" + File.separator;

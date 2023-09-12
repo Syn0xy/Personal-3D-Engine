@@ -1,28 +1,37 @@
 package engine.input;
 
+import engine.geometric.Vector2;
+
 public class InputAction {
     private InputActionType type;
+    private AxisType axis;
     private String name;
     private InputKeyCode positive;
     private InputKeyCode negative;
     private double value;
 
-    public InputAction(InputActionType type, String name, InputKeyCode positive, InputKeyCode negative){
+    public InputAction(InputActionType type, AxisType axis, String name, InputKeyCode positive, InputKeyCode negative){
         this.type = type;
+        this.axis = axis;
         this.name = name;
         this.positive = positive;
         this.negative = negative;
+    }
+
+    public InputAction(InputActionType type, String name, InputKeyCode positive, InputKeyCode negative){
+        this(type, null, name, positive, negative);
     }
 
     public InputAction(InputActionType type, String name, InputKeyCode positive){
         this(type, name, positive, null);
     }
 
-    public InputAction(String name, InputActionType type){
-        this(type, name, null);
+    public InputAction(InputActionType type, AxisType axis, String name){
+        this(type, axis, name, null, null);
     }
 
     public InputActionType getType(){ return type; }
+    public AxisType getAxis(){ return axis; }
     public String getName(){ return name; }
     public InputKeyCode getPositive(){ return positive; }
     public InputKeyCode getNegative(){ return negative; }
@@ -56,7 +65,7 @@ public class InputAction {
         return false;
     }
     
-    public static InputAction getInputActionOrNull(String type, String name, String positive, String negative){
+    public static InputAction getInputActionOrNull(String type, String axis, String name, String positive, String negative){
         if(name == null) return null;
         try{
             InputActionType inputActionType = InputActionType.valueOf(type);
@@ -65,6 +74,9 @@ public class InputAction {
             if(inputPositive != null){
                 if(inputNegative != null) return new InputAction(inputActionType, name, inputPositive, inputNegative);
                 return new InputAction(inputActionType, name, inputPositive);
+            }else{
+                AxisType axisType = AxisType.valueOf(axis);
+                return new InputAction(inputActionType, axisType, name);
             }
         }catch(Exception e){
             System.out.println("Error : InputAction : " + e.getMessage());
@@ -73,9 +85,20 @@ public class InputAction {
     }
 
     public void update(){
-        value = 0;
-        if(positive != null && positive.isStay()) value += 1;
-        if(negative != null && negative.isStay()) value -= 1;
+        switch(type){
+            case KEY :
+                value = 0;
+                if(positive != null && positive.isStay()) value += 1;
+                if(negative != null && negative.isStay()) value -= 1;
+                break;
+            case MOUSE :
+                java.awt.Point p = Input.getMouseLocation();
+                switch(axis){
+                    case X : value = p.getX(); break;
+                    case Y : value = p.getY(); break;
+                }
+                break;
+        }
     }
 
     public boolean equals(String name){

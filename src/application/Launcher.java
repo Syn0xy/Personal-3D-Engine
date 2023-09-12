@@ -15,7 +15,6 @@ import engine.component.light.Light;
 import engine.component.physic.Rigidbody;
 import engine.graphics.PaintScene;
 import engine.graphics.component.Camera;
-import engine.graphics.component.Mesh;
 import engine.input.Input;
 import engine.scene.GameObject;
 import engine.scene.PrimitiveType;

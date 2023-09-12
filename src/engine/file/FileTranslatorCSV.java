@@ -17,6 +17,7 @@ public abstract class FileTranslatorCSV {
     public final static String CSV_DELIMITER = ";";
 
     public final static String INPUT_TYPE = "TYPE";
+    public final static String INPUT_AXIS = "AXIS";
     public final static String INPUT_NAME = "NAME";
     public final static String INPUT_POSITIVE = "POSITIVE";
     public final static String INPUT_NEGATIVE = "NEGATIVE";
@@ -57,7 +58,7 @@ public abstract class FileTranslatorCSV {
         List<String> order = list.removeFirst();
         
         for(List<String> l : list){
-            String type = null, name = null, positive = null, negative = null;
+            String type = null, axis = null, name = null, positive = null, negative = null;
             if(order.size() < l.size()){
                 System.out.println("Error : ligne size != order size");
                 continue;
@@ -66,13 +67,14 @@ public abstract class FileTranslatorCSV {
             for(int i = 0; i < l.size(); i++){
                 switch(order.get(i)){
                     case INPUT_TYPE : type = l.get(i); break;
+                    case INPUT_AXIS : axis = l.get(i); break;
                     case INPUT_NAME : name = l.get(i); break;
                     case INPUT_POSITIVE : positive = l.get(i); break;
                     case INPUT_NEGATIVE : negative = l.get(i); break;
                 }
             }
             
-            InputAction ia = InputAction.getInputActionOrNull(type, name, positive, negative);
+            InputAction ia = InputAction.getInputActionOrNull(type, axis, name, positive, negative);
             if(ia != null) inputs.add(ia);
         }
         return inputs;
