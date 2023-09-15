@@ -83,8 +83,8 @@ public class Launcher extends JPanel {
                 while(isAlive() && !isInterrupted()){
                     try{
                         update();
-                        Input.update();
                         Time.update();
+                        Input.update();
                         Cooldown.update();
                         GameScene.update();
                     }catch(NullPointerException e){

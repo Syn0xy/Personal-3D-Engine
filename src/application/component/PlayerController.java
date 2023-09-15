@@ -65,7 +65,7 @@ public class PlayerController extends Component{
     }
 
     private void performMovement(){
-        if(jumping && isReadyToJump()) jump();
+        if(jumping) jump();
         if(crouching) crouch();
         //isGround();
         
@@ -101,20 +101,17 @@ public class PlayerController extends Component{
         }
     }
 
-    private boolean isReadyToJump(){
-        if(readyToJump.isValid()){
-            readyToJump.stop();
-            return true;
-        }
-        return false;
-    }
-
     // private void isGround(){
     //     readyToJump.end();
     // }
 
     private void jump(){
+        if(!readyToJump.isValid()) return;
+
+        readyToJump.stop();
         readyToJump.set(jumpCooldown);
+        readyToJump.start();
+        
         rigidbody.addForce(Vector3.UP().multiplyCopy(jumpForce/8));
     }
 

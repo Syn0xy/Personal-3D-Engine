@@ -29,21 +29,17 @@ public class Cooldown {
     public double getCurrentTime(){ return currentTime; }
 
     public boolean isValid(){
-        if(currentTime >= duration){
-            stop();
-            return true;
-        }
-        return false;
+        return currentTime >= duration;
     }
 
     public void set(double duration){
+        this.currentTime = 0;
         this.duration = duration;
-        start();
     }
 
     public void add(double duration){
+        this.currentTime = 0;
         this.duration += duration;
-        start();
     }
 
     public void start(){
