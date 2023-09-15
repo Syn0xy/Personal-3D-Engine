@@ -1,14 +1,17 @@
 package engine.input;
 
-import engine.geometric.Vector2;
-
 public class InputAction {
+    public final static int INPUT_NEUTRAL = 0;
+    public final static int INPUT_POSITIVE = 1;
+    public final static int INPUT_NEGATIVE = -1;
+
     private InputActionType type;
     private AxisType axis;
     private String name;
     private InputKeyCode positive;
     private InputKeyCode negative;
     private double value;
+    private double oldValue;
 
     public InputAction(InputActionType type, AxisType axis, String name, InputKeyCode positive, InputKeyCode negative){
         this.type = type;
@@ -36,9 +39,10 @@ public class InputAction {
     public InputKeyCode getPositive(){ return positive; }
     public InputKeyCode getNegative(){ return negative; }
     public double getValue(){ return value; }
+    public double getOldValue(){ return oldValue; }
 
     public boolean isActive(){
-        return value != 0;
+        return value != INPUT_NEUTRAL;
     }
 
     public boolean isEnter(){
@@ -69,14 +73,17 @@ public class InputAction {
         if(name == null) return null;
         try{
             InputActionType inputActionType = InputActionType.valueOf(type);
-            InputKeyCode inputPositive = Input.getInputKeyCode(KeyCode.valueOfString(positive));
-            InputKeyCode inputNegative = Input.getInputKeyCode(KeyCode.valueOfString(negative));
-            if(inputPositive != null){
-                if(inputNegative != null) return new InputAction(inputActionType, name, inputPositive, inputNegative);
-                return new InputAction(inputActionType, name, inputPositive);
-            }else{
-                AxisType axisType = AxisType.valueOf(axis);
-                return new InputAction(inputActionType, axisType, name);
+            
+            switch(inputActionType){
+                case KEY :
+                    InputKeyCode inputPositive = Input.getInputKeyCode(KeyCode.valueOfString(positive));
+                    InputKeyCode inputNegative = Input.getInputKeyCode(KeyCode.valueOfString(negative));
+                    if(inputPositive != null){
+                        if(inputNegative != null) return new InputAction(inputActionType, name, inputPositive, inputNegative);
+                        return new InputAction(inputActionType, name, inputPositive);
+                    }
+                case MOUSE :
+                    return new InputAction(inputActionType, AxisType.valueOf(axis), name);
             }
         }catch(Exception e){
             System.out.println("Error : InputAction : " + e.getMessage());
@@ -85,18 +92,21 @@ public class InputAction {
     }
 
     public void update(){
+        value = INPUT_NEUTRAL;
         switch(type){
             case KEY :
-                value = 0;
-                if(positive != null && positive.isStay()) value += 1;
-                if(negative != null && negative.isStay()) value -= 1;
+                if(positive != null && positive.isStay()) value = INPUT_POSITIVE;
+                if(negative != null && negative.isStay()) value = INPUT_NEGATIVE;
                 break;
             case MOUSE :
                 java.awt.Point p = Input.getMouseLocation();
+                double v = INPUT_NEUTRAL;
                 switch(axis){
-                    case X : value = p.getX(); break;
-                    case Y : value = p.getY(); break;
+                    case X : v = - p.getX(); break;
+                    case Y : v = p.getY(); break;
                 }
+                value = oldValue - v;
+                oldValue = v;
                 break;
         }
     }

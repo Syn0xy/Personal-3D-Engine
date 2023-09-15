@@ -117,8 +117,8 @@ public class Input implements KeyListener, MouseListener{
     }
 
     public static void update(){
-        refreshInput();
         refreshKeyCodes();
+        refreshInput();
     }
 
     private static void refreshInput(){
@@ -129,7 +129,7 @@ public class Input implements KeyListener, MouseListener{
 
     private static void refreshKeyCodes(){
         for(InputKeyCode input : INPUTS_KEYCODE){
-            input.refresh();
+            input.update();
         }
     }
 }

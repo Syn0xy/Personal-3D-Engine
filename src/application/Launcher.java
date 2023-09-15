@@ -16,6 +16,7 @@ import engine.component.physic.Rigidbody;
 import engine.graphics.PaintScene;
 import engine.graphics.component.Camera;
 import engine.input.Input;
+import engine.input.KeyCode;
 import engine.scene.GameObject;
 import engine.scene.PrimitiveType;
 import engine.scene.management.GameScene;

@@ -35,12 +35,9 @@ public class PlayerController extends Component{
     private boolean jumping;
     private boolean sprinting;
     private boolean crouching;
-
-    public PlayerController(){
-        readyToJump = new Cooldown(0);
-    }
-
+    
     public void start(){
+        readyToJump = new Cooldown(0);
         camera = getComponent(Camera.class);
         rigidbody = getComponent(Rigidbody.class);
         cameraRotation = camera.getTransform().getRotation();
@@ -59,8 +56,8 @@ public class PlayerController extends Component{
     private void myInput(){
         xMov = Input.getAxis("Horizontal");
         zMov = Input.getAxis("Vertical");
-        xRot = Input.getAxis("MouseX");
-        yRot = Input.getAxis("MouseY");
+        xRot = Input.getAxis("Mouse X");
+        yRot = Input.getAxis("Mouse Y");
         
         jumping = Input.getButton("Jump");
         sprinting = Input.getButton("Sprint");
@@ -71,7 +68,7 @@ public class PlayerController extends Component{
         if(jumping && isReadyToJump()) jump();
         if(crouching) crouch();
         //isGround();
-
+        
         double x = xMov * xMovMultiplier * speed * Time.getDeltaTime();
         double z = zMov * zMovMultiplier * speed * Time.getDeltaTime();
         double mouseX = xRot * sensitivityX;
@@ -79,8 +76,8 @@ public class PlayerController extends Component{
 
         rigidbody.addForceForward(z);
         rigidbody.addForceSideward(x);
-
-        if(Input.getKeyDown(KeyCode.MOUSE_1)){
+        
+        if(Input.getKey(KeyCode.MOUSE_3)){
             cameraRotation.plusY(mouseX);
             cameraRotation.plusX(mouseY);
             cameraRotation.setX(Mathf.clamp(cameraRotation.getX(), -cameraRotationLimit, cameraRotationLimit));
