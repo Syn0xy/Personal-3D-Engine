@@ -36,13 +36,13 @@ public class Cooldown {
     }
 
     public void set(double duration){
+        this.currentTime = 0;
         this.duration = duration;
-        start();
     }
 
     public void add(double duration){
+        this.currentTime = 0;
         this.duration += duration;
-        start();
     }
 
     public boolean start(){
