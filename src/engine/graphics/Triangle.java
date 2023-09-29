@@ -2,10 +2,11 @@ package engine.graphics;
 
 import engine.geometric.Transform;
 import engine.geometric.Vector3;
+import engine.graphics.component.Camera;
 
 public class Triangle {
     public final static boolean VISIBLE = true;
-
+    
     private Transform transform;
     private Point point1;
     private Point point2;
@@ -30,9 +31,9 @@ public class Triangle {
     public Triangle(Transform transform, Vector3 point1, Vector3 point2, Vector3 point3, Vector3 normal){
         this(
             transform,
-            new Point(transform, point1),
-            new Point(transform, point2),
-            new Point(transform, point3),
+            new Point(point1),
+            new Point(point2),
+            new Point(point3),
             normal,
             VISIBLE,
             new Vector3(),
@@ -49,10 +50,10 @@ public class Triangle {
     public Vector3 getCenter(){ return center; }
     public Material getMaterial(){ return material; }
 
-    public void reload(){
-        point1.reload();
-        point2.reload();
-        point3.reload();
+    public void reload(Camera camera){
+        point1.reload(camera, transform);
+        point2.reload(camera, transform);
+        point3.reload(camera, transform);
 
         calculateCenter();
         calculateVisibility();

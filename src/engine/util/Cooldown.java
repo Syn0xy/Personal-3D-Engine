@@ -28,11 +28,10 @@ public class Cooldown {
     public double getDuration(){ return duration; }
     public double getCurrentTime(){ return currentTime; }
 
+    public void plusDeltaTime(){ this.currentTime += Time.getDeltaTime(); }
+
     public boolean isValid(){
-        if(currentTime >= duration){
-            stop();
-            return true;
-        }
+        if(currentTime >= duration) return stop();
         return false;
     }
 
@@ -46,17 +45,19 @@ public class Cooldown {
         start();
     }
 
-    public void start(){
-        if(!COOLDOWNS.contains(this)) COOLDOWNS.add(this);
+    public boolean start(){
+        if(!COOLDOWNS.contains(this)) return COOLDOWNS.add(this);
+        return false;
     }
 
-    public void stop(){
-        if(COOLDOWNS.contains(this)) COOLDOWNS.remove(this);
+    public boolean stop(){
+        if(COOLDOWNS.contains(this)) return COOLDOWNS.remove(this);
+        return false;
     }
 
     public static void update(){
         for(Cooldown c : COOLDOWNS){
-            c.currentTime += Time.getDeltaTime();
+            c.plusDeltaTime();
         }
     }
 

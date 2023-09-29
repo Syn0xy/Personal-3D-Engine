@@ -16,7 +16,6 @@ import engine.component.physic.Rigidbody;
 import engine.graphics.PaintScene;
 import engine.graphics.component.Camera;
 import engine.input.Input;
-import engine.input.KeyCode;
 import engine.scene.GameObject;
 import engine.scene.PrimitiveType;
 import engine.scene.management.GameScene;
@@ -53,7 +52,7 @@ public class Launcher extends JPanel {
     }
 
     public static void setWindowSize(int windowWidth, int windowHeight){
-        PaintScene.setWindowSize(windowWidth, windowHeight);
+        Camera.setWindowSize(windowWidth, windowHeight);
     }
 
     public static void launch(Launcher panel){
@@ -74,7 +73,7 @@ public class Launcher extends JPanel {
 
     public void paint(Graphics g){
         PaintScene.setGraphics(g);
-        Camera.INSTANCE.xupdate();
+        Camera.updateScenes();
     }
 
     public static void thread(Launcher panel){
@@ -119,7 +118,7 @@ public class Launcher extends JPanel {
         cube.getTransform().getPosition().set(0, 0, 10);
         
         GameObject player = new GameObject("Player");
-        player.addComponent(Camera.INSTANCE);
+        player.addComponent(new Camera());
         player.addComponent(new SphereCollider());
         player.addComponent(new Rigidbody());
         player.addComponent(new Light());
@@ -139,4 +138,4 @@ public class Launcher extends JPanel {
         //     }
         // }
     }
-}
+} 

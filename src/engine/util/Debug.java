@@ -2,6 +2,9 @@ package engine.util;
 
 import java.util.Collection;
 
+import engine.geometric.Vector3;
+import engine.graphics.Color;
+
 public class Debug {
     public static <T> void println(String name, Collection<? extends T> list){
         if(list == null) return;
@@ -19,4 +22,7 @@ public class Debug {
     public static void print(){ print(""); }
     public static void print(String s){ System.out.print(s); }
 
+    public static void drawLine(Vector3 a, Vector3 b, Color c){
+        DebugLine.drawLine(a, b, c);
+    }
 }

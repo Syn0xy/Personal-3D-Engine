@@ -32,6 +32,13 @@ public class MeshData {
     public int getNormalCount(){ return normals.length; }
     public int getIndiceNormalCount(){ return indicesNormal.length; }
 
+    public Vector3 getCenter(){
+        Vector3 center = new Vector3();
+        for(Vector3 v : vertices) center.plus(v);
+        center.divide(vertices.length);
+        return center;
+    }
+
     public static MeshData load(String fileName){
         return FileTranslatorOBJ.load(fileName);
     }

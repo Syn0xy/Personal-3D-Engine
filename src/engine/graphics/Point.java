@@ -10,9 +10,6 @@ import engine.util.Mathf;
 public class Point {
     public final static boolean VISIBLE = false;
 
-    private static Camera camera = Camera.INSTANCE;
-    
-    private Transform transform;
     private Vector3 position;
     
     private Vector3 positionSpace;
@@ -23,8 +20,7 @@ public class Point {
     private MutableNumber<Double> positionY;
     private MutableNumber<Double> positionZ;
 
-    private Point(Transform transform, Vector3 position, Vector3 positionSpace, Vector2 location, boolean visible, MutableNumber<Double> positionX, MutableNumber<Double> positionY, MutableNumber<Double> positionZ){
-        this.transform = transform;
+    private Point(Vector3 position, Vector3 positionSpace, Vector2 location, boolean visible, MutableNumber<Double> positionX, MutableNumber<Double> positionY, MutableNumber<Double> positionZ){
         this.position = position;
         this.positionSpace = positionSpace;
         this.location = location;
@@ -34,9 +30,8 @@ public class Point {
         this.positionZ = positionZ;
     }
 
-    public Point(Transform transform, Vector3 position){
+    public Point(Vector3 position){
         this(
-            transform,
             position,
             new Vector3(),
             new Vector2(),
@@ -46,19 +41,18 @@ public class Point {
             new MutableNumber<>());
     }
 
-    public Transform getTransform(){ return transform; }
     public Vector3 getPosition(){ return position; }
     public Vector3 getPositionSpace(){ return positionSpace; }
     public Vector2 getLocation(){ return location; }
     public boolean isVisible(){ return visible; }
 
-    public void reload(){
-        reloadPositionSpace();
-        reloadLocation();
+    public void reload(Camera camera, Transform transform){
+        reloadPositionSpace(transform);
+        reloadLocation(camera);
         reloadVisibility();
     }
 
-    public void reloadPositionSpace(){
+    public void reloadPositionSpace(Transform transform){
         Vector3 v = position.copy();
         v.multiply(transform.getScale());
         v.rotate(transform.getRotation());
@@ -66,7 +60,7 @@ public class Point {
         positionSpace.set(v);
     }
 
-    public void reloadLocation(){
+    public void reloadLocation(Camera camera){
         Vector3 cp = camera.getTransform().getPosition();
         Vector3 cr = camera.getTransform().getRotation();
         
@@ -92,6 +86,6 @@ public class Point {
     }
 
     public String toString(){
-        return getClass().getSimpleName() + "[transform:" + transform + ", location:" + location + "]";
+        return getClass().getSimpleName() + "[location:" + location + "]";
     }
 }

@@ -61,12 +61,21 @@ public class Vector3 {
     public void multiplyX(double x){ this.x *= x; }
     public void multiplyY(double y){ this.y *= y; }
     public void multiplyZ(double z){ this.z *= z; }
+    
+    public void divide(Vector3 v){ divide(v.getX(), v.getY(), v.getZ()); }
+    public void divide(double a){ divide(a, a, a); }
+    public void divide(double x, double y, double z){ divideX(x); divideY(y); divideZ(z); }
+    public void divideX(double x){ this.x /= x; }
+    public void divideY(double y){ this.y /= y; }
+    public void divideZ(double z){ this.z /= z; }
 
     public Vector3 copy(){ return new Vector3(x, y, z); }
-    public Vector3 multiplyCopy(double a){ Vector3 v = copy(); v.multiply(a); return v; }
-    public Vector3 multiplyCopy(Vector3 a){ Vector3 v = copy(); v.multiply(a); return v; }
     public Vector3 plusCopy(double a){ Vector3 v = copy(); v.plus(a); return v; }
     public Vector3 plusCopy(Vector3 a){ Vector3 v = copy(); v.plus(a); return v; }
+    public Vector3 multiplyCopy(double a){ Vector3 v = copy(); v.multiply(a); return v; }
+    public Vector3 multiplyCopy(Vector3 a){ Vector3 v = copy(); v.multiply(a); return v; }
+    public Vector3 divideCopy(double a){ Vector3 v = copy(); v.divide(a); return v; }
+    public Vector3 divideCopy(Vector3 a){ Vector3 v = copy(); v.divide(a); return v; }
     
     public double distance(Vector3 v){ return Math.sqrt(Math.pow(this.x - v.getX(), 2) + Math.pow(this.y - v.getY(), 2) + Math.pow(this.z - v.getZ(), 2)); }
     public double distanceHorizontal(Vector3 v){ return Math.sqrt(Math.pow(this.x - v.getX(), 2) + Math.pow(this.z - v.getZ(), 2)); }
