@@ -2,6 +2,7 @@ package engine.graphics.component;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 import engine.component.Component;
 import engine.geometric.Vector3;
@@ -10,8 +11,8 @@ import engine.graphics.Triangle;
 import engine.scene.PrimitiveType;
 
 public class Mesh extends Component{
-    public final static List<Mesh> MESHS = new ArrayList<>();
-    public final static List<Triangle> TRIANGLES_LIST = new ArrayList<>();
+    public final static List<Mesh> MESHS = new CopyOnWriteArrayList<>();
+    public final static List<Triangle> TRIANGLES_LIST = new CopyOnWriteArrayList<>();
     public final static String FILE = "cube.obj";
     public final static int LOD = 0;
 

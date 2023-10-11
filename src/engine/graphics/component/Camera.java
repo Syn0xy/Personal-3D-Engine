@@ -3,9 +3,9 @@ package engine.graphics.component;
 import java.util.ArrayList;
 import java.util.List;
 
+import application.Launcher;
 import engine.component.Component;
 import engine.graphics.PaintScene;
-import engine.scene.management.GameScene;
 import engine.util.Cooldown;
 
 public class Camera extends Component{
@@ -43,6 +43,7 @@ public class Camera extends Component{
 
     public void start(){
         CAMERAS.add(this);
+        Launcher.launch(paintScene.getCanvas());
     }
 
     private void init(){
@@ -70,7 +71,7 @@ public class Camera extends Component{
     }
 
     public void drawScene(){
-        paintScene.drawScene();
+        paintScene.update();
     }
     
     public static void updateScenes(){
@@ -79,9 +80,9 @@ public class Camera extends Component{
         }
     }
     
-    public static void setWindowSize(int windowWidth, int windowHeight){
+    public static void reloadWindowSize(){
         for(Camera c : CAMERAS){
-            c.getPaintScene().setWindowSize(windowWidth, windowHeight);
+            c.paintScene.reloadWindowSize();
         }
     }
     

@@ -7,6 +7,9 @@ import engine.geometric.Vector3;
 import engine.graphics.component.Camera;
 import engine.util.Mathf;
 
+import static application.Launcher.windowWidth;
+import static application.Launcher.windowHeight;
+
 public class Point {
     public final static boolean VISIBLE = false;
 
@@ -81,8 +84,8 @@ public class Point {
 
     public void reloadVisibility(){
         visible = positionZ.getValue() >= 0 &&
-            location.getX() >= 0 && location.getX() <= PaintScene.windowWidth &&
-            location.getY() >= 0 && location.getY() <= PaintScene.windowHeight;
+            location.getX() >= 0 && location.getX() <= windowWidth &&
+            location.getY() >= 0 && location.getY() <= windowHeight;
     }
 
     public String toString(){

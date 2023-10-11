@@ -12,18 +12,17 @@ import engine.file.FileTranslatorCSV;
 
 public class Input implements KeyListener, MouseListener{
     public final static String FILE = "inputs.csv";
-    public final static Input INSTANCE = new Input();
     public final static List<InputKeyCode> INPUTS_KEYCODE = InputKeyCode.getInputsKeyCode();
     public final static List<InputAction> INPUTS_ACTION = FileTranslatorCSV.getInputsAction();
     
-    public void keyPressed(KeyEvent e){ inputPressed(e); }
-    public void keyReleased(KeyEvent e){ inputReleased(e); }
-    public void keyTyped(KeyEvent e){}
-    public void mouseClicked(MouseEvent e){}
-    public void mouseEntered(MouseEvent e){}
-    public void mouseExited(MouseEvent e){}
-    public void mousePressed(MouseEvent e){ inputPressed(e); }
-    public void mouseReleased(MouseEvent e){ inputReleased(e);}
+    @Override public void keyPressed(KeyEvent e){ inputPressed(e); }
+    @Override public void keyReleased(KeyEvent e){ inputReleased(e); }
+    @Override public void keyTyped(KeyEvent e){}
+    @Override public void mouseClicked(MouseEvent e){}
+    @Override public void mouseEntered(MouseEvent e){}
+    @Override public void mouseExited(MouseEvent e){}
+    @Override public void mousePressed(MouseEvent e){ inputPressed(e); }
+    @Override public void mouseReleased(MouseEvent e){ inputReleased(e);}
     
     private static String getKeyboardCode(KeyEvent e){ return KeyEvent.getKeyText(e.getKeyCode()); }
     private static String getMouseCode(MouseEvent e){ return "mouse" + e.getButton(); }
@@ -31,6 +30,7 @@ public class Input implements KeyListener, MouseListener{
     private static void inputPressed(KeyEvent e){ inputPressed(getKeyboardCode(e));}
     private static void inputPressed(MouseEvent e){ inputPressed(getMouseCode(e));}
     private static void inputPressed(String key){ setKeyCodeDown(key); }
+
     private static void inputReleased(KeyEvent e){ inputReleased(getKeyboardCode(e));}
     private static void inputReleased(MouseEvent e){ inputReleased(getMouseCode(e));}
     private static void inputReleased(String key){ setKeyCodeUp(key); }
@@ -122,8 +122,8 @@ public class Input implements KeyListener, MouseListener{
     }
 
     private static void refreshInput(){
-        for(InputAction i : INPUTS_ACTION){
-            i.update();
+        for(InputAction input : INPUTS_ACTION){
+            input.update();
         }
     }
 
