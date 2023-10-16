@@ -1,5 +1,7 @@
 package engine.graphics;
 
+import java.awt.Color;
+
 public class Material {
     private Texture texture;
     private Color color;
@@ -10,7 +12,7 @@ public class Material {
     }
 
     public Material(Texture texture){
-        this(texture, Color.random());
+        this(texture, Colorf.random());
     }
 
     public Material(){

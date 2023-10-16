@@ -118,9 +118,6 @@ public class Launcher {
     }
 
     public static void update(){
-        if(Input.getKey(KeyCode.A)){
-            System.out.println("test");
-        }
         // Mesh mesh = Main.testPyramid.getComponent(Mesh.class);
         // if(mesh != null && mesh.getTriangleCount() > 0) mesh.getTriangles().get(0).calculateVisibility();
 

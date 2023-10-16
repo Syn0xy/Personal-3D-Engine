@@ -12,7 +12,7 @@ import engine.scene.PrimitiveType;
 
 public class Mesh extends Component{
     public final static List<Mesh> MESHS = new CopyOnWriteArrayList<>();
-    public final static List<Triangle> TRIANGLES_LIST = new CopyOnWriteArrayList<>();
+    public final static List<Triangle> TRIANGLES_LIST = new ArrayList<>();
     public final static String FILE = "cube.obj";
     public final static int LOD = 0;
 
@@ -40,7 +40,7 @@ public class Mesh extends Component{
     public String getFileName(){ return fileName; }
     public MeshData getData(){ return data; }
     public int getLod(){ return lod; }
-    public List<Triangle> getTRIANGLES(){ return TRIANGLES; }
+    public List<Triangle> getTriangles(){ return TRIANGLES; }
 
     public void setFileName(String fileName){ this.fileName = fileName; }
     public void setData(MeshData data){ this.data = data; }

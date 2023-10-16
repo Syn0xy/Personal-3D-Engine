@@ -1,8 +1,13 @@
 package engine.graphics;
 
+import java.awt.Polygon;
+
 import engine.geometric.Transform;
 import engine.geometric.Vector3;
 import engine.graphics.component.Camera;
+
+import static engine.graphics.PaintScene.halfWindowWidth;
+import static engine.graphics.PaintScene.halfWindowHeight;
 
 public class Triangle {
     public final static boolean VISIBLE = true;
@@ -49,6 +54,16 @@ public class Triangle {
     public boolean isVisible(){ return visible; }
     public Vector3 getCenter(){ return center; }
     public Material getMaterial(){ return material; }
+
+    public Polygon getPolygon(){
+        int x1 = (int)point1.getLocation().getX() + halfWindowWidth;
+        int x2 = (int)point2.getLocation().getX() + halfWindowWidth;
+        int x3 = (int)point3.getLocation().getX() + halfWindowWidth;
+        int y1 = (int)point1.getLocation().getY() + halfWindowHeight;
+        int y2 = (int)point2.getLocation().getY() + halfWindowHeight;
+        int y3 = (int)point3.getLocation().getY() + halfWindowHeight;
+        return new Polygon(new int[]{x1, x2, x3}, new int[]{y1, y2, y3}, 3);
+    }
 
     public void reload(Camera camera){
         point1.reload(camera, transform);

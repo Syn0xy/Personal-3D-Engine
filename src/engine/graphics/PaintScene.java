@@ -5,7 +5,6 @@ import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 import engine.geometric.Transform;
-import engine.geometric.Vector2;
 import engine.geometric.Vector3;
 import engine.graphics.component.Camera;
 import engine.util.DebugLine;
@@ -16,40 +15,38 @@ import static java.awt.Color.BLACK;
 import static application.Launcher.windowWidth;
 import static application.Launcher.windowHeight;
 
-public class PaintScene {
+public class PaintScene extends Canvas{
     public static int halfWindowWidth;
     public static int halfWindowHeight;
     public static double screenProportion;
 
     private Camera camera;
-    private Canvas canvas;
     
     public PaintScene(Camera camera){
         this.camera = camera;
-        this.canvas = new Canvas();
         reloadWindowSize();
     }
 
     public Camera getCamera(){ return camera; }
-    public Canvas getCanvas(){ return canvas; }
     
     public void reloadWindowSize(){
         PaintScene.halfWindowWidth = windowWidth / 2;
         PaintScene.halfWindowHeight = windowHeight / 2;
-        PaintScene.screenProportion = halfWindowWidth / (Mathf.tanInDegrees(camera.getFieldOfView()/2));
+        PaintScene.screenProportion = halfWindowWidth / (Mathf.tanInDegrees(camera.getFieldOfView() / 2));
     }
 
     public void update(){
-        canvas.repaint();
+        repaint();
         drawScene();
     }
 
     public void drawScene(){
-        if(!canvas.canDraw()) return;
-        canvas.clearScreen(BLACK);
-        draw();
+        if(canDraw()){
+            clearScreen(BLACK);
+            draw();
+        }
     }
-
+    
     public void draw(){
         // drawDebugs();
         drawMeshs();
@@ -75,20 +72,14 @@ public class PaintScene {
     
     public void drawTriangles(){
         for(Triangle t : TRIANGLES_LIST){
-            drawTriangle(t);
+            if(t.isVisible()) drawTriangle(t);
         }
     }
     
     public void drawTriangle(Triangle t){
-        if(!t.isVisible()) return;
-        
-        Vector2 l1 = t.getPoint1().getLocation(), l2 = t.getPoint2().getLocation(), l3 = t.getPoint3().getLocation();
-        canvas.drawPolygon(t.getMaterial().getColor().toColorAWT(),
-            (int)l1.getX(), (int)l1.getY(),
-            (int)l2.getX(), (int)l2.getY(),
-            (int)l3.getX(), (int)l3.getY());
+        drawPolygon(t.getMaterial().getColor(), t.getPolygon());
     }
-
+    
     public void drawDebugs(){
         drawDebugLines();
     }
@@ -104,10 +95,10 @@ public class PaintScene {
         Point p2 = new Point(line.getEnd());
         p1.reload(camera, new Transform(Vector3.ZERO()));
         p2.reload(camera, new Transform(Vector3.ZERO()));
-        canvas.drawLine(p1.getLocation(), p2.getLocation());
+        drawLine(p1.getLocation(), p2.getLocation());
     }
 
     public String toString(){
-        return getClass().getSimpleName() + "[camera:" + camera + ", canvas:" + canvas + "]";
+        return getClass().getSimpleName() + "[camera:" + camera + "]";
     }
 }

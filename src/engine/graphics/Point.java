@@ -78,14 +78,14 @@ public class Point {
         double proportion = PaintScene.screenProportion / positionZ.getValue();
 
         location.set(
-            positionX.getValue() * proportion + PaintScene.halfWindowWidth,
-            positionY.getValue() * proportion + PaintScene.halfWindowHeight);
+            positionX.getValue() * proportion,
+            positionY.getValue() * proportion);
     }
 
     public void reloadVisibility(){
         visible = positionZ.getValue() >= 0 &&
-            location.getX() >= 0 && location.getX() <= windowWidth &&
-            location.getY() >= 0 && location.getY() <= windowHeight;
+            location.getX() >= - windowWidth && location.getX() <= windowWidth &&
+            location.getY() >= - windowHeight && location.getY() <= windowHeight;
     }
 
     public String toString(){

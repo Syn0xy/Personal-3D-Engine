@@ -43,7 +43,7 @@ public class Camera extends Component{
 
     public void start(){
         CAMERAS.add(this);
-        Launcher.launch(paintScene.getCanvas());
+        Launcher.launch(paintScene);
     }
 
     private void init(){

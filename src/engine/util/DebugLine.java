@@ -1,10 +1,10 @@
 package engine.util;
 
 import java.util.List;
+import java.awt.Color;
 import java.util.ArrayList;
 
 import engine.geometric.Vector3;
-import engine.graphics.Color;
 
 public class DebugLine {
     public final static List<DebugLine> LINES = new ArrayList<>();

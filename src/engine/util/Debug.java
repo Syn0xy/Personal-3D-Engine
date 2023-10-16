@@ -1,9 +1,9 @@
 package engine.util;
 
+import java.awt.Color;
 import java.util.Collection;
 
 import engine.geometric.Vector3;
-import engine.graphics.Color;
 
 public class Debug {
     public static <T> void println(String name, Collection<? extends T> list){

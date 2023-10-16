@@ -1,10 +1,10 @@
 package engine.component.light;
 
+import java.awt.Color;
 import java.util.ArrayList;
 import java.util.List;
 
 import engine.component.Component;
-import engine.graphics.Color;
 
 public class Light extends Component{
     public final static List<Light> LIGHTS = new ArrayList<>();
@@ -24,7 +24,7 @@ public class Light extends Component{
     }
 
     public Light(LightType type, double range, double intensity){
-        this(type, range, intensity, new Color());
+        this(type, range, intensity, Color.WHITE);
     }
 
     public Light(LightType type, double range){
