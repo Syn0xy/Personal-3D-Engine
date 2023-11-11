@@ -6,6 +6,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
 
 import engine.component.Component;
 import engine.geometric.Vector3;
+import engine.graphics.Material;
 import engine.graphics.MeshData;
 import engine.graphics.Triangle;
 import engine.scene.PrimitiveType;
@@ -40,7 +41,7 @@ public class Mesh extends Component{
     public String getFileName(){ return fileName; }
     public MeshData getData(){ return data; }
     public int getLod(){ return lod; }
-    public List<Triangle> getTriangles(){ return TRIANGLES; }
+    public List<Triangle> getTRIANGLES(){ return TRIANGLES; }
 
     public void setFileName(String fileName){ this.fileName = fileName; }
     public void setData(MeshData data){ this.data = data; }
@@ -80,7 +81,7 @@ public class Mesh extends Component{
                 Vector3 v2 = vertices[indicesVertice[i+1]];
                 Vector3 v3 = vertices[indicesVertice[i+2]];
                 
-                Triangle triangle = new Triangle(transform, v1, v2, v3, normals[indicesNormal[i]]);
+                Triangle triangle = new Triangle(transform, v1, v2, v3, normals[indicesNormal[i]], new Material());
                 
                 list.add(triangle);
             }

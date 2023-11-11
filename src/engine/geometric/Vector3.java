@@ -16,9 +16,9 @@ public class Vector3 {
     public final static double Y = 0;
     public final static double Z = 0;
 
-    private double x;
-    private double y;
-    private double z;
+    public double x;
+    public double y;
+    public double z;
     
     public Vector3(double x, double y, double z){
         this.x = x;
@@ -30,39 +30,38 @@ public class Vector3 {
         this(X, Y, Z);
     }
 
-    public double getX(){ return x; }
-    public double getY(){ return y; }
-    public double getZ(){ return z; }
-
-    public void set(Vector3 v){ set(v.getX(), v.getY(), v.getZ()); }
+    public void set(Vector3 v){ set(v.x, v.y, v.z); }
     public void set(double a){ set(a, a, a); }
     public void set(double x, double y, double z){ setX(x); setY(y); setZ(z); }
     public void setX(double x){ this.x = x; }
     public void setY(double y){ this.y = y; }
     public void setZ(double z){ this.z = z; }
     
-    public void plus(Vector3 v){ plus(v.getX(), v.getY(), v.getZ()); }
+    public void plus(Vector3... varray){
+        for(Vector3 v : varray){ plus(v); }
+    }
+    public void plus(Vector3 v){ plus(v.x, v.y, v.z); }
     public void plus(double a){ plus(a, a, a); }
     public void plus(double x, double y, double z){ plusX(x); plusY(y); plusZ(z); }
     public void plusX(double x){ this.x += x; }
     public void plusY(double y){ this.y += y; }
     public void plusZ(double z){ this.z += z; }
     
-    public void minus(Vector3 v){ minus(v.getX(), v.getY(), v.getZ()); }
+    public void minus(Vector3 v){ minus(v.x, v.y, v.z); }
     public void minus(double a){ minus(a, a, a); }
     public void minus(double x, double y, double z){ minusX(x); minusY(y); minusZ(z); }
     public void minusX(double x){ this.x -= x; }
     public void minusY(double y){ this.y -= y; }
     public void minusZ(double z){ this.z -= z; }
     
-    public void multiply(Vector3 v){ multiply(v.getX(), v.getY(), v.getZ()); }
+    public void multiply(Vector3 v){ multiply(v.x, v.y, v.z); }
     public void multiply(double a){ multiply(a, a, a); }
     public void multiply(double x, double y, double z){ multiplyX(x); multiplyY(y); multiplyZ(z); }
     public void multiplyX(double x){ this.x *= x; }
     public void multiplyY(double y){ this.y *= y; }
     public void multiplyZ(double z){ this.z *= z; }
     
-    public void divide(Vector3 v){ divide(v.getX(), v.getY(), v.getZ()); }
+    public void divide(Vector3 v){ divide(v.x, v.y, v.z); }
     public void divide(double a){ divide(a, a, a); }
     public void divide(double x, double y, double z){ divideX(x); divideY(y); divideZ(z); }
     public void divideX(double x){ this.x /= x; }
@@ -77,9 +76,9 @@ public class Vector3 {
     public Vector3 divideCopy(double a){ Vector3 v = copy(); v.divide(a); return v; }
     public Vector3 divideCopy(Vector3 a){ Vector3 v = copy(); v.divide(a); return v; }
     
-    public double distance(Vector3 v){ return Math.sqrt(Math.pow(this.x - v.getX(), 2) + Math.pow(this.y - v.getY(), 2) + Math.pow(this.z - v.getZ(), 2)); }
-    public double distanceHorizontal(Vector3 v){ return Math.sqrt(Math.pow(this.x - v.getX(), 2) + Math.pow(this.z - v.getZ(), 2)); }
-    public double distanceVertical(Vector3 v){ return Mathf.distance(this.y, v.getY()); }
+    public double distance(Vector3 v){ return Math.sqrt(Math.pow(this.x - v.x, 2) + Math.pow(this.y - v.y, 2) + Math.pow(this.z - v.z, 2)); }
+    public double distanceHorizontal(Vector3 v){ return Math.sqrt(Math.pow(this.x - v.x, 2) + Math.pow(this.z - v.z, 2)); }
+    public double distanceVertical(Vector3 v){ return Mathf.distance(this.y, v.y); }
     
     public static double distance(Vector3 v1, Vector3 v2){ return v1.distance(v2); }
     public static double distanceHorizontal(Vector3 v1, Vector3 v2){ return v1.distanceHorizontal(v2); }
@@ -94,20 +93,20 @@ public class Vector3 {
         else if(v == 1) return b.copy();
         
         return new Vector3(
-            a.getX() + (b.getX() - a.getX()) * v,
-            a.getY() + (b.getY() - a.getY()) * v,
-            a.getZ() + (b.getZ() - a.getZ()) * v);
+            a.x + (b.x - a.x) * v,
+            a.y + (b.y - a.y) * v,
+            a.z + (b.z - a.z) * v);
     }
     
     public void rotate(Vector3 rotation){ rotate(this, rotation); }
     public void rotate(Vector3 positionBase, Vector3 rotation){
-        MutableNumber<Double> verticeX = new MutableNumber<Double> (positionBase.getX());
-        MutableNumber<Double> verticeY = new MutableNumber<Double> (positionBase.getY());
-        MutableNumber<Double> verticeZ = new MutableNumber<Double> (positionBase.getZ());
+        MutableNumber<Double> verticeX = new MutableNumber<Double> (positionBase.x);
+        MutableNumber<Double> verticeY = new MutableNumber<Double> (positionBase.y);
+        MutableNumber<Double> verticeZ = new MutableNumber<Double> (positionBase.z);
         
-        Mathf.rotation(verticeY, verticeZ, rotation.getX());
-        Mathf.rotation(verticeY, verticeX, rotation.getZ());
-        Mathf.rotation(verticeX, verticeZ, rotation.getY());
+        Mathf.rotation(verticeY, verticeZ, rotation.x);
+        Mathf.rotation(verticeY, verticeX, rotation.z);
+        Mathf.rotation(verticeX, verticeZ, rotation.y);
 
         set(verticeX.getValue(), verticeY.getValue(), verticeZ.getValue());
     }
@@ -131,7 +130,7 @@ public class Vector3 {
     }
 
     public boolean equals(Vector3 v){
-        return x == v.getX() && y == v.getY() && z == v.getZ();
+        return x == v.x && y == v.y && z == v.z;
     }
 
     public String toString(){

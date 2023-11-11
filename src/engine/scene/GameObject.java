@@ -5,16 +5,20 @@ import java.util.List;
 
 import engine.component.Component;
 import engine.geometric.Transform;
+import engine.geometric.Vector3;
 import engine.graphics.component.Mesh;
+import engine.scene.management.GameScene;
 
 public class GameObject {
     public final static PrimitiveType PRIMITIVE_TYPE = PrimitiveType.CUBE;
     public final static String NAME = "GameObject";
     public static int count = 0;
-
+    
     private String name;
     private Transform transform;
     private List<Component> components;
+
+    private GameScene gameScene;
 
     public GameObject(String name, Transform transform, List<Component> components){
         this.name = name;
@@ -26,8 +30,16 @@ public class GameObject {
         this(name, transform, new ArrayList<>());
     }
 
+    public GameObject(String name, Vector3 position){
+        this(name, new Transform(position));
+    }
+
     public GameObject(Transform transform){
         this(NAME + count++, transform);
+    }
+
+    public GameObject(Vector3 position){
+        this(new Transform(position));
     }
 
     public GameObject(String name){
@@ -41,6 +53,9 @@ public class GameObject {
     public String getName(){ return name; }
     public Transform getTransform(){ return transform; }
     public List<Component> getComponents(){ return components; }
+    public GameScene getGameScene(){ return gameScene; }
+
+    public void setGameScene(GameScene gameScene){ this.gameScene = gameScene; }
     
     public void awake(){ for(Component c : components) c.awake(); }
     public void start(){ for(Component c : components) c.start(); }
@@ -50,6 +65,10 @@ public class GameObject {
     public boolean addComponent(Component c){
         c.setGameObject(this);
         return components.add(c);
+    }
+
+    public boolean removeComponent(Component c){
+        return components.remove(c);
     }
 
     public <T extends Component> boolean containsComponent(Class<T> type){
@@ -64,7 +83,19 @@ public class GameObject {
         }
         return null;
     }
+    
+    public boolean destroy(){
+        return destroy(this);
+    }
 
+    public boolean destroy(GameObject g){
+        return gameScene.destroy(g);
+    }
+
+    public boolean destroy(Component c){
+        return removeComponent(c);
+    }
+    
     public static GameObject createPrimitive(){
         return createPrimitive(PRIMITIVE_TYPE);
     }

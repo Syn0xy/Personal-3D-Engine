@@ -3,7 +3,6 @@ package engine.component;
 import engine.component.collider.Collision;
 import engine.geometric.Transform;
 import engine.scene.GameObject;
-import engine.scene.management.GameScene;
 
 public abstract class Component {
     protected GameObject gameObject;
@@ -32,10 +31,10 @@ public abstract class Component {
     public <T extends Component> T getComponent(Class<T> type){
         return gameObject.getComponent(type);
     }
-
-    public void destroy(){ destroy(gameObject); }
-    public static void destroy(GameObject g){ GameScene.destroy(g); }
-    public static void instantiate(GameObject g){ GameScene.instantiate(g); }
+    
+    public void destroy(){ gameObject.destroy(this); }
+    public void destroy(GameObject g){ gameObject.destroy(g); }
+    public void instantiate(GameObject g){ gameObject.getGameScene().instantiate(g); }
 
     public void onCollisionEnter(Collision c){}
     public void onCollisionExit(Collision c){}

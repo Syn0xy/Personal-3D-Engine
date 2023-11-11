@@ -5,16 +5,16 @@ import java.util.Comparator;
 import engine.geometric.Vector3;
 
 public class DistanceTriangleComparator implements Comparator<Triangle>{
-    private final Vector3 cameraPosition;
+    private final Vector3 CAMERA_POSITION;
 
-    public DistanceTriangleComparator(Vector3 cameraPosition){
-        this.cameraPosition = cameraPosition;
+    public DistanceTriangleComparator(Vector3 cp){
+        this.CAMERA_POSITION = cp;
     }
 
     public int compare(Triangle a, Triangle b){
         return Double.compare(
-            a.getCenter().distance(cameraPosition),
-            b.getCenter().distance(cameraPosition)
+            CAMERA_POSITION.distance(a.getCenter()),
+            CAMERA_POSITION.distance(b.getCenter())
         );
     }
 }

@@ -1,23 +1,20 @@
 package engine.graphics.component;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.ConcurrentModificationException;
 
-import application.Launcher;
 import engine.component.Component;
-import engine.graphics.PaintScene;
 import engine.util.Cooldown;
+import engine.view.GameView;
+import engine.view.util.Subject;
 
 public class Camera extends Component{
-    public final static List<Camera> CAMERAS = new ArrayList<>();
     public final static int FIELD_OF_VIEW = 90;
     
     private int fieldOfView;
-    private PaintScene paintScene;
+    private GameView gameView;
 
     private Cooldown cooldownUpdate;
     private Cooldown cooldownOneSecond;
-
     private boolean limitFPS;
     private int frames;
     private int currentFramesPerSecond;
@@ -26,8 +23,12 @@ public class Camera extends Component{
 
     public Camera(int fieldOfView){
         this.fieldOfView = fieldOfView;
-        this.paintScene = new PaintScene(this);
-        init();
+        this.gameView = new GameView(this);
+        this.cooldownUpdate = new Cooldown();
+        this.cooldownOneSecond = new Cooldown();
+        this.limitFPS = true;
+        this.refreshTime = 1;
+        this.framesPerSecond = 500;
     }
 
     public Camera(){
@@ -35,58 +36,55 @@ public class Camera extends Component{
     }
 
     public int getFieldOfView(){ return fieldOfView; }
-    public PaintScene getPaintScene(){ return paintScene; }
     public int getFramesPerSecond(){ return currentFramesPerSecond; }
     public int getCurrentFramesPerSecond(){ return currentFramesPerSecond; }
+    
+    public int getHalfWindowWidth(){ return gameView.halfWindowWidth; }
+    public int getHalfWindowwHeight(){ return gameView.halfWindowHeight; }
+    public double getScreenProportion(){ return gameView.screenProportion; }
 
     public void setFieldOfView(int fieldOfView){ this.fieldOfView = fieldOfView; }
 
     public void start(){
-        CAMERAS.add(this);
-        Launcher.launch(paintScene);
-    }
-
-    private void init(){
-        this.cooldownUpdate = new Cooldown();
-        this.cooldownOneSecond = new Cooldown();
-        this.limitFPS = false;
-        this.refreshTime = 1;
+        cooldownUpdate.start();
+        cooldownOneSecond.start();
+                
+        new Thread("Graphics"){
+            public void run(){
+                while(isAlive() && !isInterrupted()){
+                    try{
+                        updateScene();
+                    }catch(NullPointerException | ConcurrentModificationException e){
+                        System.err.println("Error Graphics Thread : " + e.getMessage());
+                    }
+                }
+            }
+        }.start();
     }
 
     private void updateScene(){
-        if(limitFPS && cooldownUpdate.isValid()){
+        if(limitFPS){
+            if(cooldownUpdate.isValid()){
                 frames+=1;
                 drawScene();
-                cooldownUpdate.set(1 / framesPerSecond);
-        }
-        else{
-            frames+=1;
+                cooldownUpdate.set(1.0 / framesPerSecond);
+            }
+        }else{
             drawScene();
+            frames+=1;
         }
         if(cooldownOneSecond.isValid()){
-            currentFramesPerSecond = (int)(frames * (1 / refreshTime));
+            currentFramesPerSecond = (int)(frames * (1.0 / refreshTime));
             frames = 0;
             cooldownOneSecond.set(refreshTime);
         }
     }
 
     public void drawScene(){
-        paintScene.update();
-    }
-    
-    public static void updateScenes(){
-        for(Camera c : CAMERAS){
-            c.updateScene();
-        }
-    }
-    
-    public static void reloadWindowSize(){
-        for(Camera c : CAMERAS){
-            c.paintScene.reloadWindowSize();
-        }
+        gameView.update(new Subject() {});
     }
     
     public String toString(){
-        return getClass().getSimpleName() + "[fieldOfView:" + fieldOfView + ", paintScene:" + paintScene + "]";
+        return getClass().getSimpleName() + "[fieldOfView:" + fieldOfView + ", gameView:" + gameView + "]";
     }
 }

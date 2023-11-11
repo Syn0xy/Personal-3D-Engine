@@ -5,8 +5,8 @@ import java.util.List;
 
 public class Cooldown {
     public final static List<Cooldown> COOLDOWNS = new ArrayList<>();
-    public final static double DURATION = 10;
-    public final static double CURRENT_TIME = 0;
+    private final static double DURATION = 10;
+    private final static double CURRENT_TIME = 0;
 
     private double duration;
     private double currentTime;
@@ -14,7 +14,6 @@ public class Cooldown {
     public Cooldown(double duration, double currentTime){
         this.duration = duration;
         this.currentTime = currentTime;
-        start();
     }
 
     public Cooldown(double duration){
@@ -31,8 +30,7 @@ public class Cooldown {
     public void plusDeltaTime(){ this.currentTime += Time.getDeltaTime(); }
 
     public boolean isValid(){
-        if(currentTime >= duration) return stop();
-        return false;
+        return currentTime >= duration;
     }
 
     public void set(double duration){

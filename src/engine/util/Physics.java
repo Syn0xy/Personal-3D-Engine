@@ -9,10 +9,10 @@ public class Physics {
     }
 
     public static boolean inside(Vector2 p, Vector2 a, Vector2 b, Vector2 c){
-        double x = p.getX(), y = p.getY();
-        double Ax = a.getX(), Ay = a.getY();
-        double Bx = b.getX(), By = b.getY();
-        double Cx = c.getX(), Cy = c.getY();
+        double x = p.x, y = p.y;
+        double Ax = a.x, Ay = a.y;
+        double Bx = b.x, By = b.y;
+        double Cx = c.x, Cy = c.y;
 
         double denominator = (By - Cy)*(Ax - Cx) + (Cx - Bx)*(Ay - Cy);
         double lambda1 = ((By - Cy)*(x - Cx) + (Cx - Bx)*(y - Cy)) / denominator;

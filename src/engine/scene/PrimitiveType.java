@@ -14,4 +14,8 @@ public enum PrimitiveType{
     public String getFileName(){
         return fileName;
     }
+
+    public String toString(){
+        return getClass().getSimpleName() + "[name:" + name() + ", fileName:" + fileName + "]";
+    }
 }

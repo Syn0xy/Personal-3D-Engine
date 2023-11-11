@@ -40,7 +40,8 @@ public class PlayerController extends Component{
         readyToJump = new Cooldown(0);
         camera = getComponent(Camera.class);
         rigidbody = getComponent(Rigidbody.class);
-        cameraRotation = camera.getTransform().getRotation();
+        if(camera != null) cameraRotation = camera.getTransform().getRotation();
+        else cameraRotation = new Vector3();
     }
 
     public void update(){
@@ -80,7 +81,7 @@ public class PlayerController extends Component{
         if(Input.getKey(KeyCode.MOUSE_3)){
             cameraRotation.plusY(mouseX);
             cameraRotation.plusX(mouseY);
-            cameraRotation.setX(Mathf.clamp(cameraRotation.getX(), -cameraRotationLimit, cameraRotationLimit));
+            cameraRotation.setX(Mathf.clamp(cameraRotation.x, -cameraRotationLimit, cameraRotationLimit));
         }
     }
 
