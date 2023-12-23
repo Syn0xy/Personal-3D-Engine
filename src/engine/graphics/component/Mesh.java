@@ -13,25 +13,20 @@ import engine.scene.PrimitiveType;
 
 public class Mesh extends Component{
     public final static List<Mesh> MESHS = new CopyOnWriteArrayList<>();
-    public final static List<Triangle> TRIANGLES_LIST = new ArrayList<>();
     public final static String FILE = "cube.obj";
     public final static int LOD = 0;
+    public static Triangle[] allTriangles;
 
     private MeshData data;
     private String fileName;
     private int lod;
 
-    private final List<Triangle> TRIANGLES;
+    private Triangle[] triangles;
     
-    private Mesh(String fileName, MeshData data, int lod, List<Triangle> TRIANGLES){
+    private Mesh(String fileName, MeshData data, int lod){
         this.fileName = fileName;
         this.data = data;
         this.lod = lod;
-        this.TRIANGLES = TRIANGLES;
-    }
-
-    private Mesh(String fileName, MeshData data, int lod){
-        this(fileName, data, lod, new ArrayList<>());
     }
 
     private Mesh(String fileName, MeshData data){
@@ -41,7 +36,7 @@ public class Mesh extends Component{
     public String getFileName(){ return fileName; }
     public MeshData getData(){ return data; }
     public int getLod(){ return lod; }
-    public List<Triangle> getTRIANGLES(){ return TRIANGLES; }
+    public Triangle[] getTriangles(){ return triangles; }
 
     public void setFileName(String fileName){ this.fileName = fileName; }
     public void setData(MeshData data){ this.data = data; }
@@ -89,12 +84,28 @@ public class Mesh extends Component{
 
         // Debug.println("Triangles", list);
 
-        TRIANGLES.addAll(list);
-        TRIANGLES_LIST.addAll(TRIANGLES);
+        triangles = list.toArray(new Triangle[list.size()]);
     }
 
+    public void reloadAllTriangles(){
+        int total = 0;
+        for(int i = 0; i < MESHS.size(); i++) total += MESHS.get(i).triangles.length;
+        Triangle[] triangles = new Triangle[total];
+        int index = 0;
+        for(int i = 0; i < MESHS.size(); i++){
+            for(int j = 0; j < MESHS.get(i).triangles.length; j++ ){
+                triangles[index] = MESHS.get(i).triangles[j];
+                index++;
+            }
+        }
+        allTriangles = triangles;
+    }
+
+    @Override
     public void awake(){
         loadTriangles(data);
+        MESHS.add(this);
+        reloadAllTriangles();
     }
 
     public String toString(){

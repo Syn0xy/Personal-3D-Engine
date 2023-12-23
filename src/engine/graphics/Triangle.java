@@ -8,39 +8,40 @@ import engine.geometric.Vector2Int;
 import engine.geometric.Vector3;
 import engine.graphics.component.Camera;
 import engine.util.Mathf;
-import engine.view.GameView;
 
 public class Triangle extends Polygon{
     private static final int SIDES_TRIANGLE = 3;
-    public final static boolean VISIBLE = true;
+    private static final boolean VISIBLE = false;
     
     private Transform transform;
-    private Vector3 point1;
-    private Vector3 point2;
-    private Vector3 point3;
+    private Vector3[] points;
     private Vector3 normal;
     private Material material;
 
     private boolean visible;
-    private Vector3 pointSpace1;
-    private Vector3 pointSpace2;
-    private Vector3 pointSpace3;
+    private Vector3[] spacePoints;
     private Vector3 center;
 
     public Triangle(Transform transform, Vector3 point1, Vector3 point2, Vector3 point3, Vector3 normal, Material material){
         super(new int[SIDES_TRIANGLE], new int[SIDES_TRIANGLE], SIDES_TRIANGLE);
         this.transform = transform;
-        this.point1 = point1;
-        this.point2 = point2;
-        this.point3 = point3;
+        this.points = new Vector3[SIDES_TRIANGLE];
+        this.points[0] = point1;
+        this.points[1] = point2;
+        this.points[2] = point3;
         this.normal = normal;
         this.material = material;
         
         this.visible = VISIBLE;
-        this.pointSpace1 = new Vector3();
-        this.pointSpace2 = new Vector3();
-        this.pointSpace3 = new Vector3();
+        this.spacePoints = new Vector3[SIDES_TRIANGLE];
         this.center = new Vector3();
+        init();
+    }
+
+    private void init(){
+        for(int i = 0; i < spacePoints.length; i++){
+            spacePoints[i] = new Vector3();
+        }
     }
 
     public Transform getTransform(){ return transform; }
@@ -50,34 +51,25 @@ public class Triangle extends Polygon{
     public Vector3 getCenter(){ return center; }
     public Material getMaterial(){ return material; }
 
-    public void reload(Camera camera){
-        reloadPositionSpace();
-        Vector2Int v1 = reloadLocationInScreen(pointSpace1, camera);
-        Vector2Int v2 = reloadLocationInScreen(pointSpace2, camera);
-        Vector2Int v3 = reloadLocationInScreen(pointSpace3, camera);
-        xpoints[0] = v1.x; ypoints[0] = v1.y;
-        xpoints[1] = v2.x; ypoints[1] = v2.y;
-        xpoints[2] = v3.x; ypoints[2] = v3.y;
-        
-        visible = isValidLocation(pointSpace1, v1) || isValidLocation(pointSpace2, v2) || isValidLocation(pointSpace3, v3);
+    public void reload(Camera c){
+        for(int i = 0; i < spacePoints.length; i++){
+            reloadPositionSpace(i);
+            reloadLocationInScreen(c, i);
+        }
+        calculateVisibility(c);
         calculateCenter();
     }
-
-    public void reloadPositionSpace(){
-        pointSpace1 = reloadPositionSpace(point1);
-        pointSpace2 = reloadPositionSpace(point2);
-        pointSpace3 = reloadPositionSpace(point3);
-    }
     
-    public Vector3 reloadPositionSpace(Vector3 v){
-        Vector3 a = v.copy();
+    private void reloadPositionSpace(int index){
+        Vector3 a = points[index].copy();
         a.multiply(transform.getScale());
         a.rotate(transform.getRotation());
         a.plus(transform.getPosition());
-        return a;
+        spacePoints[index] = a;
     }
 
-    public Vector2Int reloadLocationInScreen(Vector3 v, Camera c){
+    private void reloadLocationInScreen(Camera c, int index){
+        Vector3 v = spacePoints[index];
         Vector3 cp = c.getTransform().getPosition();
         Vector3 cr = c.getTransform().getRotation();
         
@@ -93,21 +85,28 @@ public class Triangle extends Polygon{
         v.set(px.getValue(), py.getValue(), pz.getValue());
 
         double proportion = c.getScreenProportion() / v.z;
-        return Vector2Int.valueOf(v.x * proportion + c.getHalfWindowWidth(), v.y * proportion + c.getHalfWindowwHeight());
+        xpoints[index] = (int)(v.x * proportion + c.getWidth() / 2);
+        ypoints[index] = (int)(v.y * proportion + c.getHeight() / 2);
     }
 
-    public boolean isValidLocation(Vector3 p, Vector2Int l){
-        return p.z >= 0 /* && l.x >= 0 && l.x <= windowWidth && l.y >= 0 && l.y <= windowHeight */;
+    private boolean isValidLocation(Camera c, int index){
+        return spacePoints[index].z >= 0 && xpoints[index] >= 0 && xpoints[index] <= c.getWidth() && ypoints[index] >= 0 && ypoints[index] <= c.getHeight();
     }
 
-    public void calculateCenter(){
+    private void calculateVisibility(Camera c){
+        visible = isValidLocation(c, 0) || isValidLocation(c, 1) || isValidLocation(c, 2);
+    }
+
+    private void calculateCenter(){
         Vector3 v = new Vector3();
-        v.plus(pointSpace1, pointSpace2, pointSpace3);
-        v.divide(3);
+        for(int i = 0; i < spacePoints.length; i++){
+            v.plus(spacePoints[i]);
+        }
+        v.divide(spacePoints.length);
         center.set(v);
     }
 
     public String toString(){
-        return getClass().getSimpleName() + "[transform:" + transform + ", point1:" + point1 + ", point2:" + point2 + ", point3:" + point3 + ", normal:" + normal + "]";
+        return getClass().getSimpleName() + "[transform:" + transform + ", points:" + points.length + ", normal:" + normal + "]";
     }
 }

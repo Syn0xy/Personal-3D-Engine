@@ -3,8 +3,9 @@ package engine.component;
 import engine.component.collider.Collision;
 import engine.geometric.Transform;
 import engine.scene.GameObject;
+import engine.view.util.Subject;
 
-public abstract class Component {
+public abstract class Component extends Subject {
     protected GameObject gameObject;
     protected Transform transform;
     protected String name;

@@ -9,15 +9,19 @@ import engine.scene.GameObject;
 import engine.util.Cooldown;
 import engine.util.Debug;
 import engine.util.Time;
+import engine.view.GameView;
 
 public class GameScene {
     private List<GameObject> gameObjects;
+    private GameView gameView;
 
     public GameScene(){
         this.gameObjects = new ArrayList<>();
+        this.gameView = new GameView(this);
     }
 
     public List<GameObject> getGameObjects(){ return gameObjects; }
+    public GameView getGameView(){ return gameView; }
 
     public void start(){
         new Thread("Engine"){
@@ -34,6 +38,7 @@ public class GameScene {
                 }
             }
         }.start();
+        gameView.setVisible(true);
     }
 
     private void update(){ for(GameObject g : gameObjects){ g.update(); } }
@@ -50,6 +55,7 @@ public class GameScene {
     }
     
     public boolean destroy(GameObject g){
+        g.destroy();
         return gameObjects.remove(g);
     }
 

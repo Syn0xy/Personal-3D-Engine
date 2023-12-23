@@ -37,9 +37,6 @@ public class Vector3 {
     public void setY(double y){ this.y = y; }
     public void setZ(double z){ this.z = z; }
     
-    public void plus(Vector3... varray){
-        for(Vector3 v : varray){ plus(v); }
-    }
     public void plus(Vector3 v){ plus(v.x, v.y, v.z); }
     public void plus(double a){ plus(a, a, a); }
     public void plus(double x, double y, double z){ plusX(x); plusY(y); plusZ(z); }

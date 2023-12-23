@@ -84,9 +84,7 @@ public class GameObject {
         return null;
     }
     
-    public boolean destroy(){
-        return destroy(this);
-    }
+    public void destroy(){}
 
     public boolean destroy(GameObject g){
         return gameScene.destroy(g);

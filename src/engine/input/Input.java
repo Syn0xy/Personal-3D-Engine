@@ -11,9 +11,15 @@ import java.util.List;
 import engine.file.FileTranslatorCSV;
 
 public class Input implements KeyListener, MouseListener{
-    public final static String FILE = "inputs.csv";
-    public final static List<InputKeyCode> INPUTS_KEYCODE = InputKeyCode.getInputsKeyCode();
-    public final static List<InputAction> INPUTS_ACTION = FileTranslatorCSV.getInputsAction();
+    public static final String FILE = "inputs.csv";
+    public static final List<InputKeyCode> INPUTS_KEYCODE = InputKeyCode.getInputsKeyCode();
+    public static final List<InputAction> INPUTS_ACTION = FileTranslatorCSV.getInputsAction();
+    private static Input singleton;
+
+    public final static Input getInstance(){
+        if(singleton ==  null) singleton = new Input();
+        return singleton;
+    }
     
     @Override public void keyPressed(KeyEvent e){ inputPressed(e); }
     @Override public void keyReleased(KeyEvent e){ inputReleased(e); }
